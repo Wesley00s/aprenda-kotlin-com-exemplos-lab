@@ -1,3 +1,3 @@
 package entities
 
-data class Usuario (val id : String, val nome: String, val formacoes : List<Formacao>)
+open class Usuario (val id : String, val primeiroNome: String, val sobrenome : String)

@@ -1,6 +1,10 @@
 package entities;
 
-data class Formacao (val nome: String, val conteudos: List<Conteudo>) {
+data class Formacao (
+    val id : String,
+    val nome: String,
+) {
+    val conteudos: MutableSet<Conteudo> = mutableSetOf()
 
     fun duracao(): Int {
         var duracaoTotal = 0
@@ -12,7 +16,7 @@ data class Formacao (val nome: String, val conteudos: List<Conteudo>) {
 
     private val inscritos = mutableListOf<Usuario>()
 
-    fun matricular (usuario: Usuario) {
-        inscritos.add(usuario)
+    fun matricular (vararg usuarios: Usuario) {
+        for (usuario in usuarios) inscritos.add(usuario)
     }
 }
