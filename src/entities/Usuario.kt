@@ -1,3 +1,11 @@
 package entities
 
-open class Usuario (val id : String, val primeiroNome: String, val sobrenome : String)
+import enumeration.TipoUsuario
+
+open class Usuario(
+    val tipoUsuario: TipoUsuario?,
+    val id: String,
+    val primeiroNome: String,
+    val sobrenome: String,
+    val senha: String
+)

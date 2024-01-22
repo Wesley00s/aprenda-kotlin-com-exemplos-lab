@@ -1,27 +1,38 @@
 package entities
 
+import enumeration.TipoUsuario.ALUNO
+
 class Aluno (
     id: String,
     primeiroNome: String,
     sobrenome: String,
-) : Usuario (id, primeiroNome, sobrenome) {
+    senha : String
+) : Usuario (ALUNO, id, primeiroNome, sobrenome, senha) {
 
-    private val formacoes : MutableSet<Formacao> = mutableSetOf()
-
-    fun matriculado() : String{
-        val resultado = StringBuilder()
-        resultado.append("O(a) aluno(a) $primeiroNome de ID = $id, está matriculado(a) nessas formações.\n")
-        for (formacao in formacoes) {
-            resultado.append("ID da formação: ${formacao.id}\n")
-            resultado.append("Conteúdos da formação:\n")
-            for (conteudo in formacao.conteudos)
-                resultado.append("\tID do conteúdo: ${conteudo.id}\n")
-        }
-        resultado.append("-----------------------------------------\n")
-        return resultado.toString()
-    }
+    private val formacoes  = mutableSetOf<Formacao>()
+    val certificados = mutableSetOf<Certificado>()
 
     fun addFormacao(formacao: Formacao) {
         formacoes.add(formacao)
+    }
+
+    fun verMinhasFormacoes() {
+        println("\n\t\t* MINHAS FORMAÇÕES")
+
+        for (formacao in formacoes) {
+            println(formacao)
+        }
+    }
+
+    fun adicionarCertificado(certificado: Certificado) {
+        certificados.add(certificado)
+    }
+
+    override fun toString(): String {
+        return """
+            ID do aluno: $id
+            Nome do aluno: $primeiroNome $sobrenome
+            Senha: $senha
+            ----------------------------------------"""
     }
 }

@@ -33,5 +33,19 @@ class Util {
             println("\t------$replace------")
             print("\t>> ")
         }
+
+        fun printGreen(str: String): String {
+            val greenColor = "\u001B[32m"
+            val resetColor = "\u001B[0m"
+
+            return "$greenColor$str$resetColor"
+        }
+
+        fun printBlue(str: String): String {
+            val blueColor = "\u001B[34m"
+            val resetColor = "\u001B[0m"
+
+            return "$blueColor$str$resetColor"
+        }
     }
 }
