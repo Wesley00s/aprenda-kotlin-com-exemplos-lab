@@ -14,7 +14,7 @@ data class Conteudo(
     val duracao: Double,
 ) {
 
-    var situacaoConteudo: Situacao = EM_ANDAMENTO
+    var situacaoConteudo: Situacao = PENDENTE
 
     fun concluirConteudo() {
         situacaoConteudo = CONCLUIDO
@@ -22,7 +22,7 @@ data class Conteudo(
 
     override fun toString(): String {
         fun funcaoCor(str: String) = when (situacaoConteudo) {
-            EM_ANDAMENTO -> printBlue(str)
+            PENDENTE -> printBlue(str)
             CONCLUIDO -> printGreen(str)
         }
         return funcaoCor(

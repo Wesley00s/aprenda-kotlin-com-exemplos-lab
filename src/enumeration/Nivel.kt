@@ -1,3 +1,7 @@
 package enumeration
 
-enum class Nivel { BASICO, INTERMEDIARIO, AVANCADO }
+enum class Nivel {
+     BASICO,
+    INTERMEDIARIO,
+    AVANCADO
+}

@@ -78,7 +78,7 @@ class FormacaoService {
             val idFormacao = sc.nextLine()
 
             for (formacao in formacoes) {
-                if (formacao.id == idFormacao) {
+                if (formacao.idFormacao == idFormacao) {
                     return formacao
                 }
             }

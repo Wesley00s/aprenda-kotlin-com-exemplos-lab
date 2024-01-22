@@ -19,7 +19,7 @@ class AdminService {
         val usuarios : MutableList<Usuario> = mutableListOf()
 
         fun adicionarPrimeiroAdmin() {
-            val admin = Administrador("AD${generateID()}", "Adminto", "Supremo", "senhaSuprema")
+            val admin = Administrador("AD${generateID()}", "a", "a", "1")
             usuarios.add(admin)
         }
 

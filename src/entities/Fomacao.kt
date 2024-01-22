@@ -1,18 +1,15 @@
 package entities;
 
-import enumeration.Situacao
 import enumeration.Situacao.*
 import utility.Util.Companion.printGreen
 import utility.Util.Companion.printBlue
 
 data class Formacao (
-    val id: String,
+    var idFormacao: String,
     val nomeFormacao: String,
 ) {
-    var situacaoFormacao : Situacao = EM_ANDAMENTO
-
-    private val conteudos = mutableSetOf<Conteudo>()
-    private val inscritos = mutableSetOf<Usuario>()
+    var situacaoFormacao = PENDENTE
+    var conteudos = mutableSetOf<Conteudo>()
 
     fun duracao(): Double {
         var duracaoTotal = 0.0
@@ -20,33 +17,6 @@ data class Formacao (
             duracaoTotal += conteudo.duracao
         }
         return duracaoTotal
-    }
-
-    fun matricular(usuario: Usuario) {
-        inscritos.add(usuario)
-    }
-
-    fun estudarFormacao() {
-        if (conteudos.isEmpty()) {
-            println("A formação não possui conteúdos.")
-            return
-        }
-        if (situacaoFormacao == CONCLUIDO) {
-            println("A formação já foi concluída.")
-            return
-        }
-
-        for (conteudo in conteudos) {
-            if (conteudo.situacaoConteudo == EM_ANDAMENTO) {
-                conteudo.concluirConteudo()
-                println("Estudo do conteúdo '${conteudo.nomeConteudo}' concluído.")
-                if(conteudos.last() == conteudo) {
-                    println("Parabéns! Você concluiu a formação '${nomeFormacao}'.")
-                    situacaoFormacao = CONCLUIDO
-                }
-                break
-            }
-        }
     }
 
     fun adicionarConteudo(conteudo: Conteudo) {
@@ -70,7 +40,7 @@ data class Formacao (
     override fun toString(): String {
         val conteudosString = verConteudos()
         fun funcaoCor(str : String) = when (situacaoFormacao) {
-            EM_ANDAMENTO -> printBlue(str)
+            PENDENTE -> printBlue(str)
             CONCLUIDO -> printGreen(str)
         }
 
@@ -78,10 +48,9 @@ data class Formacao (
     *****************************************************************************************
     |   FORMAÇÃO
     |   
-    |   ID da formação: $id
+    |   ID da formação: $idFormacao
     |   Nome da formação: $nomeFormacao
     |   Duração: ${duracao()}H
-    |   Total de inscritos: ${inscritos.size}
     |   Situação formação: $situacaoFormacao
     |    
     $conteudosString""")

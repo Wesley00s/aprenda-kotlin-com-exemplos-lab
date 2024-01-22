@@ -2,9 +2,9 @@ package services
 
 import app.menuUsuarios
 import entities.Aluno
-import entities.Certificado
+import entities.Conteudo
+import entities.Formacao
 import entities.Matricula
-import enumeration.Situacao.*
 import enumeration.TipoUsuario.*
 import services.AdminService.Companion.adicionarUsuario
 import services.AdminService.Companion.usuarios
@@ -44,10 +44,27 @@ class AlunoService {
                     "Voltar ao menu de usuários"
                 )
                 when (sc.nextLine()) {
-                    "1" -> fazerMatricula(aluno)?.let { adicionarMatricula(it) }
+                    "1" -> {
+                        println("\n\t* FAZER MATRÍCULA\n")
+
+                        println("Informe a formação em que deseja se matricular.")
+                        val formacao = procurarFormacao()
+
+                        if (formacao != null) {
+                            val copiaFormacao = Formacao(formacao.idFormacao, formacao.nomeFormacao)
+                            for (f in formacao.conteudos) {
+                                copiaFormacao.adicionarConteudo(Conteudo(f.nivel, f.id, f.nomeConteudo, f.desc, f.duracao))
+                            }
+                            adicionarMatricula(fazerMatricula(aluno, copiaFormacao))
+                            println("Matrícula feita com sucesso.")
+                        } else {
+                            println("A matrícula não pôde ser feita.")
+                        }
+
+                    }
                     "2" -> verListaDeFormacoes()
                     "3" -> aluno.verMinhasFormacoes()
-                    "4" -> estudarFormacao(aluno)
+                    "4" -> aluno.estudarFormacao()
                     "5" -> procurarFormacao()
                     "6" -> verMeusCertificados(aluno)
                     "7" -> menuUsuarios()
@@ -56,24 +73,9 @@ class AlunoService {
             }
         }
 
-        fun verMeusCertificados(aluno: Aluno) {
+        private fun verMeusCertificados(aluno: Aluno) {
             for (certificado in aluno.certificados) {
                 println(certificado)
-            }
-        }
-
-        private fun estudarFormacao(aluno: Aluno) {
-            println("\n\t* ESTUDAR FORMAÇÃO\n")
-            val formacao = procurarFormacao()
-            formacao?.estudarFormacao()
-
-            if (formacao != null) {
-                if (formacao.situacaoFormacao == CONCLUIDO) {
-                    val certificado = Certificado("CRD${generateID()}", LocalDate.now(), aluno, formacao)
-                    println("\n\t* CERTIFICADO DE CONCLUSÃO")
-                    println(certificado)
-                    aluno.adicionarCertificado(certificado)
-                }
             }
         }
 
@@ -81,21 +83,10 @@ class AlunoService {
             matriculas.add(matricula)
         }
 
-        private fun fazerMatricula(aluno: Aluno): Matricula? {
-            println("\n\t* FAZER MATRÍCULA\n")
-
-            println("Informe a formação em que deseja se matricular.")
-            val formacao = procurarFormacao()
-            val matricula : Matricula
-            if (formacao != null) {
-                matricula = Matricula("MT${generateID()}", LocalDate.now(), aluno, formacao)
-                aluno.addFormacao(formacao)
-                formacao.matricular(aluno)
-                println("Matrícula feita com sucesso.")
-            } else {
-                println("A matrícula não pôde ser feita.")
-                return null
-            }
+        fun fazerMatricula(aluno: Aluno, formacao: Formacao): Matricula {
+            val matricula = Matricula("MT${generateID()}", LocalDate.now(), aluno, formacao)
+            aluno.addFormacao(formacao)
+            matriculas.add(matricula)
             return matricula
         }
 
